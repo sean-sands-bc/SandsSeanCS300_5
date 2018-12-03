@@ -1,0 +1,2 @@
+index	hash	bst	arr	sec/1000000
+0	2	0	1
