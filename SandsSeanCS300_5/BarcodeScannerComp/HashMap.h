@@ -18,6 +18,9 @@ private:
 	size_t(*hash)(const K&, size_t);	//	a hashing function that takes a key and a size_t, and returns a hash value from 0 to that size_t-1
 
 public:
+	typedef K key_type;
+	typedef V value_type;
+
 	HashMap(size_t as, size_t(*h)(const K&, size_t));	//	constructor, takes hash table size and hashing function pointer
 	~HashMap() { clear(); delete[] arr;	arr = nullptr;}	//	destructor, clears BSTs and frees hash table
 

@@ -24,6 +24,9 @@ private:
 
 	void clear(Node<K, V> *r);
 public:
+	typedef K key_type;
+	typedef V value_type;
+
 	BSTMap() {}
 	~BSTMap() { clear(); }
 

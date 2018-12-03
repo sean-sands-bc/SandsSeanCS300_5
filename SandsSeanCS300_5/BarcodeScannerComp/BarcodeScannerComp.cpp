@@ -3,6 +3,8 @@
 #include <string>	//	key and value type
 #include <vector>	//	key container
 
+#include "BarcodeScanner.h"
+
 #include "ArrayMap.h"	//map implementations
 #include "BSTMap.h"	
 #include "HashMap.h"
@@ -28,7 +30,7 @@ size_t numberStringHash(const std::string &s, const size_t m)
 int main()
 {
 	//array of sizes
-	size_t sizes[] = { 1, 11, 101, 1001, 10001, 100001, 1000001 };
+	size_t sizes[] = { 1, 11, 101, 1001, 10001 };//, 100001, 1000001 };
 
 	clock_t t;
 
@@ -46,10 +48,14 @@ int main()
 		ofn += ".txt";
 		std::ofstream ofs(ofn);
 		
-		//initialize containers
-		BSTMap<std::string, std::string> bbs;
-		ArrayMap<std::string, std::string> bas(s);
-		HashMap<std::string, std::string> bhs(1009, numberStringHash);	//	initialize array size to 1009, a prime, instead of 1000, 997 is another good alternative
+		//initialize scanners
+		BarcodeScanner<BSTMap<std::string, std::string>> BSTScanner(new BSTMap<std::string, std::string>);
+		BarcodeScanner<ArrayMap<std::string, std::string>> ArrayScanner(new ArrayMap<std::string, std::string>(s));
+		BarcodeScanner<HashMap<std::string, std::string>> HashScanner(new HashMap<std::string, std::string>(1009, numberStringHash));
+		
+		//BSTMap<std::string, std::string> bbs;
+		//ArrayMap<std::string, std::string> bas(s);
+		//HashMap<std::string, std::string> bhs(1009, numberStringHash);	//	initialize array size to 1009, a prime, instead of 1000, 997 is another good alternative
 
 		std::vector<std::pair<size_t,std::string>> keys;
 		keys.reserve(s);
@@ -69,7 +75,8 @@ int main()
 			
 			try
 			{
-				bbs.insert(k, v);
+				//bbs.insert(k, v);
+				BSTScanner.scan(k, v);
 				
 			}
 			catch (const int &e)
@@ -88,8 +95,10 @@ int main()
 			{
 				keys.push_back(std::make_pair(i,k));
 			}
-			bhs.insert(k, v);
-			bas.insert(k, v);
+			//bhs.insert(k, v);
+			//bas.insert(k, v);
+			HashScanner.scan(k, v);
+			ArrayScanner.scan(k, v);
 		}
 		//	data header
 		ofs << "index\thash\tbst\tarr\tsec/" << CLOCKS_PER_SEC << std::endl;
@@ -98,15 +107,18 @@ int main()
 		{
 			ofs << k.first << "\t";	//	print index
 			t = clock();	//	start hash find clock
-			auto v1 = bhs.find(k.second);	//	find value associated with key k
+			//auto v1 = bhs.find(k.second);	//	find value associated with key k
+			auto v1 = HashScanner.scan(k.second);
 			t = clock() - t;	//	end hash find clock
 			ofs << t << "\t";	//	print hash find clock to file
 			t = clock();	//	start bst find clock
-			auto v2 = bbs.find(k.second);	//	find value associated with key k
+			//auto v2 = bbs.find(k.second);	//	find value associated with key k
+			auto v2 = BSTScanner.scan(k.second);
 			t = clock() - t;	//	end bst find clock
 			ofs << t << "\t";	//	print bst find clock to file
 			t = clock();	//	start array find clock
-			auto v3 = bas.find(k.second);	//	find value associated with key k
+			//auto v3 = bas.find(k.second);	//	find value associated with key k
+			auto v3 = ArrayScanner.scan(k.second);
 			t = clock() - t;	//	end array find clock
 			ofs << t << std::endl;	//	print array find clock to file
 		}

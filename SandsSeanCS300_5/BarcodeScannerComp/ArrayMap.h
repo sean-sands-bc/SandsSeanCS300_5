@@ -11,6 +11,9 @@ private:
 	size_t cap = 0;	//	max number of elements array can hold
 
 public:
+	typedef K key_type;
+	typedef V value_type;
+
 	ArrayMap(size_t c) :
 		keyArr(new K[c]), valArr(new V[c]), cap(c) {}
 	~ArrayMap() { clear(); }
