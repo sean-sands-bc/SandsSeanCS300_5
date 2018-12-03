@@ -7,8 +7,8 @@ private:
 	K *keyArr = nullptr;
 	V *valArr = nullptr;
 
-	size_t sz = 0;
-	size_t cap = 0;
+	size_t sz = 0;	//	number of elements currently in array
+	size_t cap = 0;	//	max number of elements array can hold
 
 public:
 	ArrayMap(size_t c) :

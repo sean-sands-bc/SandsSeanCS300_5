@@ -1,6 +1,6 @@
 #pragma once
-#include "BSTMap.h"
-#include <iostream>
+
+#include "BSTMap.h"	//	inner hash table container
 
 /*
 	A BST-Array implementation of a hash map
@@ -14,7 +14,7 @@ private:
 
 	BSTMap<K, V> *arr;	//	hash table
 
-	//size_t hash(const K &k) const;
+	
 	size_t(*hash)(const K&, size_t);	//	a hashing function that takes a key and a size_t, and returns a hash value from 0 to that size_t-1
 
 public:

@@ -2,7 +2,6 @@
 #include <fstream>	//	to read corpus, and write results
 #include <string>	//	key and value type
 #include <vector>	//	key container
-#include <iostream>
 
 #include "ArrayMap.h"	//map implementations
 #include "BSTMap.h"	
@@ -33,7 +32,7 @@ int main()
 
 	clock_t t;
 
-	//	for each size, create and fill array and bst implementations with that many values
+	//	for each size, create and fill array, bst, hash table implementations with that many values
 	//	also fill a vector with ~100 evenly distributed keys
 	//	then search for each value associated with a stored key, logging times in a .txt
 	for (size_t s : sizes)
@@ -50,7 +49,7 @@ int main()
 		//initialize containers
 		BSTMap<std::string, std::string> bbs;
 		ArrayMap<std::string, std::string> bas(s);
-		HashMap<std::string, std::string> bhs(1009, numberStringHash);	//	initialize array size to 1009, a prime, instead of 1000
+		HashMap<std::string, std::string> bhs(1009, numberStringHash);	//	initialize array size to 1009, a prime, instead of 1000, 997 is another good alternative
 
 		std::vector<std::pair<size_t,std::string>> keys;
 		keys.reserve(s);
@@ -78,7 +77,7 @@ int main()
 				if (e == 1)	//	duplicate key
 				{
 					--i;	//	decrement count since nothing added, and %dist values could be missed otherwise
-					continue;
+					continue;	//	skip below inserts
 				}
 				else
 				{
@@ -115,7 +114,6 @@ int main()
 		ifs.close();
 		ofs.close();
 	}
-	//char c;
-	//std::cin >> c;
+	
 	return 0;
 }
